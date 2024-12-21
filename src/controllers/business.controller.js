@@ -4,7 +4,7 @@ const { crudService, tokenService } = require("../services/index");
 
 exports.fetchBusiness = async (req, res, next) => {
   try {
-    const business = await BusinessModel.find({ isDeleted: false });
+    const business = await BusinessModel.find({ is_delete: false });
     if (!business) throw new customError.NotFoundError("Business not found!");
 
     res.status(200).json({ success: true, business });
