@@ -10,10 +10,10 @@ const authenticateToken = (req, res, next) => {
     const token = req.headers['authorization'];
     if (!token) throw new customError.UnauthorizedError("Access token required!");
 
-    const {user} = tokenService.validateToken(token, process.env.ACCESS_TOKEN_SECRET);
+    const { user } = tokenService.validateToken(token, process.env.ACCESS_TOKEN_SECRET);
     if (!user) throw new customError.UnauthorizedError("Invalid or expired token!");
 
-    req.headers.user = user 
+    req.headers.user = user
     next();
 };
 

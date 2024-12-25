@@ -31,8 +31,8 @@ const customerValidationSchema = joi.object({
     address: joi.string().required().messages({
         'string.empty': 'Address is required',
     }),
-    image: joi.string().required().messages({
-        'string.empty': 'Address is required',
+    image: joi.string().optional().messages({
+        'string.empty': 'Image is required',
     }),
     email: joi.string().required().email().lowercase().message({
         'string.empty': 'Email is required',

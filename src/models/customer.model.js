@@ -41,8 +41,7 @@ const customerSchema = new Schema({
     },
     image: {
         type: String,
-        required: true,
-        trim: true
+        // required: true,
     },
     Business: {
         type: mongoose.Schema.Types.ObjectId,
