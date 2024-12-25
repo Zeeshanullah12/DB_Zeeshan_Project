@@ -68,7 +68,7 @@ exports.login = async (req, res, next) => {
     };
 
     const tokens = await tokenService.generateAuthToken(payloadData);
-    if (!tokens) throw new Error("Token was not generated.");
+    if (!tokens) throw new Error("Token was not generated..");
 
     res.status(200).json({ success: true, result: business, tokens: tokens });
   } catch (err) {
