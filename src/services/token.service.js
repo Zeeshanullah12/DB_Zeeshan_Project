@@ -27,11 +27,11 @@ const verifyToken = (token, secret) => {
 
 const validateToken = (token, secret) => {
     try {
-        const decoded = jwt.verify(token, secret);
-        return { valid: true, id: decoded.id };
+        let token_ = token.split(" ")[1]
+        const decoded = jwt.verify(token_, secret);
+        return { valid: true, user: decoded };
     } catch (error) {
-        console.error('Token validation error:', error);
-        return { valid: false };
+        throw new Error(`Token validation error: ${error.message}`);
     }
 };
 

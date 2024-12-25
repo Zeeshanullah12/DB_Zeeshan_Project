@@ -5,23 +5,7 @@ const phoneNumberRegex = /^\+?[1-9]\d{1,14}$/;
 const Schema = mongoose.Schema;
 
 
-const businessSchema = new Schema({
-    businessName: {
-        type: String,
-        required: true,
-    },
-    businessCity: {
-        type: String,
-        required: true,
-    },
-    businessLocation: {
-        type: String,
-        required: true,
-    },
-    cnic: {
-        type: String,
-        required: true,
-    },
+const customerSchema = new Schema({
     userName: {
         type: String,
         required: true,
@@ -44,7 +28,7 @@ const businessSchema = new Schema({
         required: false,
         match: phoneNumberRegex
     },
-    userAddress: {
+    address: {
         type: String,
         required: true,
     },
@@ -55,20 +39,15 @@ const businessSchema = new Schema({
         lowercase: true,
         trim: true
     },
-    password: {
-        type: String,
-        required: true,
-        minlength: 6
-    },
     image: {
         type: String,
         required: true,
         trim: true
     },
-    isApproved: {
-        type: String,
-        required: true,
-        default: false
+    Business: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Businessstore',
+        required: false
     },
     isDeleted: {
         type: Boolean,
@@ -78,10 +57,28 @@ const businessSchema = new Schema({
         type: Date,
         default: Date.now
     },
+    createdBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Businessstore',
+        required: false
+    },
     updatedAt: {
         type: Date,
         default: Date.now
     },
+    updatedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Businessstore',
+        required: false
+    },
+    deletedAt: {
+        type: Date
+    },
+    deletedBy: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Businessstore',
+        required: false
+    }
 }, { timestamps: true })
 
-module.exports = mongoose.model('Businessstore', businessSchema)
+module.exports = mongoose.model('Customer', customerSchema)
