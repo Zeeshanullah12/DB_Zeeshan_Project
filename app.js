@@ -16,7 +16,6 @@ app.use(imageUpload.upload);  // Handles image upload before parsing JSON
 app.use(cors());
 app.use(bodyParser.json());
 app.use("/assets/images", express.static(imageUpload.serveImages));
-
 // ** Call Main Router **
 app.use("/api", mandiRouter);
 

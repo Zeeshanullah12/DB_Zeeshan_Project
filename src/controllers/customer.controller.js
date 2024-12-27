@@ -9,10 +9,9 @@ const path = require("path");
 exports.fetchCustomers = async (req, res, next) => {
   try {
     const { id } = req.headers.user;
-
     const customer = await CustomerModel.find({
       Business: id,
-      is_Delete: false,
+      isDeleted: false,
     });
     if (!customer.length > 0)
       throw new customError.NotFoundError("Customers not found!");
