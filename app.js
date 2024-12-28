@@ -1,5 +1,4 @@
 const express = require("express");
-const bodyParser = require("body-parser");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDb = require("./src/config/db");
@@ -10,12 +9,19 @@ const imageUpload = require("./src/utils/imageUploadHelper");
 dotenv.config();
 connectDb();
 
-// ** expend the packages ***
 const app = express();
+
+// Middleware to log requests
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
+
 app.use(imageUpload.upload);  // Handles image upload before parsing JSON
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());  // Use express.json() instead of bodyParser.json()
 app.use("/assets/images", express.static(imageUpload.serveImages));
+
 // ** Call Main Router **
 app.use("/api", mandiRouter);
 
