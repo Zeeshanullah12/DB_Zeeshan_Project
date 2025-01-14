@@ -4,6 +4,7 @@ const customerController = require('../controllers/customer.controller')
 const validationMiddleware = require('../middlewares/validation.middeware')
 const { customerValidationSchema } = require('../validations/customer.validation')
 
+
 const router = express.Router();
 
 router.get('/', authenticateToken, customerController.fetchCustomers);

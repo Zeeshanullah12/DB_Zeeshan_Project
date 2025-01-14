@@ -1,18 +1,18 @@
 const path = require('path');
 const multer = require('multer');
 
-
 // Define file storage configuration
 const fileStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, '../assets/images')); // Save files in the "images" folder at the project root
+        // Save files in the "images" folder at the project root
+        cb(null, path.join(__dirname, '../assets/images'));
     },
     filename: (req, file, cb) => {
+        // Generate a unique filename using a timestamp and original file name
         const timestamp = new Date().toISOString().replace(/:/g, '-');
         cb(null, `${timestamp}-${file.originalname}`);
     }
 });
-
 
 // File filter to validate image types
 const fileFilter = (req, file, cb) => {
@@ -24,7 +24,6 @@ const fileFilter = (req, file, cb) => {
     }
 };
 
-
 // Multer configuration
 const upload = multer({
     storage: fileStorage,
@@ -32,9 +31,8 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 } // Limit file size to 5MB
 });
 
-
 // Export the upload middleware and helper functions
 module.exports = {
-    upload: upload.single('image'),
-    serveImages: path.join(__dirname, '../assets/images')
+    upload: upload.single("image"),
+    serveImages: path.join(__dirname, '../assets/images') // Path to serve images
 };
