@@ -1,25 +1,25 @@
-const BusinessModel = require("../models/business.model");
+const UserModel = require("../models/user.model");
 const { customError, encryptionHelper } = require("../utils");
 const { crudService, tokenService } = require("../services/index");
 
 // ===================================================
-// *********** Fetch All the Business Data ***********
+// *********** Fetch All the User Data ***********
 // ===================================================
-exports.fetchBusiness = async (req, res, next) => {
+exports.fetchUser = async (req, res, next) => {
   try {
-    const business = await BusinessModel.find({ is_delete: false });
-    if (!business) throw new customError.NotFoundError("Business not found!");
+    const user = await UserModel.find({ is_delete: false });
+    if (!user) throw new customError.NotFoundError("User not found!");
 
-    res.status(200).json({ success: true, business });
+    res.status(200).json({ success: true, user });
   } catch (err) {
     next(err);
   }
 };
 
 // ===================================================
-// ************** Upload Business Image  *************
+// ************** Upload User Image  *************
 // ===================================================
-exports.uploadBusinessImage = async (req, res, next) => {
+exports.uploadUserImage = async (req, res, next) => {
   try {
     let file = req.file;
     if (!file)
@@ -37,25 +37,24 @@ exports.uploadBusinessImage = async (req, res, next) => {
 };
 
 // ===================================================
-// **************** Register Business  ***************
+// **************** Register User  ***************
 // ===================================================
-exports.createBusiness = async (req, res, next) => {
+exports.createUser = async (req, res, next) => {
   try {
     let payload = req.body;
-    const business = await BusinessModel.findOne({ email: payload.email });
-    if (business) throw new customError.NotFoundError("Email already exsist!");
+    const user = await UserModel.findOne({ email: payload.email });
+    if (user) throw new customError.NotFoundError("Email already exsist!");
 
     payload.password = await encryptionHelper.hash(payload.password);
-    const addBusiness = await crudService.create(BusinessModel, payload);
-    if (!addBusiness)
-      throw new customError.NotFoundError("Business creation fail!");
+    const addUser = await crudService.create(UserModel, payload);
+    if (!addUser)
+      throw new customError.NotFoundError("User creation fail!");
 
     res.status(200).json({
       success: true,
       result: {
-        businessName: addBusiness.businessName,
-        userName: addBusiness.userName,
-        email: addBusiness.email,
+        userName: addUser.userName,
+        email: addUser.email,
       },
     });
   } catch (err) {
@@ -70,72 +69,71 @@ exports.login = async (req, res, next) => {
   try {
     let payload = req.body;
 
-    const business = await BusinessModel.findOne({
+    const user = await UserModel.findOne({
       email: payload.email,
       isDeleted: false,
     });
-    if (!business)
+    if (!user)
       throw new customError.NotFoundError("Email does not exsist!");
-    if (business?.isApproved && business?.isApproved == true)
+    if (user?.isApproved && user?.isApproved == true)
       throw new customError.UnauthorizedError(
         "Access denied: approval pending!"
       );
 
     isMatch = await encryptionHelper.compareHash(
       payload.password,
-      business.password
+      user.password
     );
     if (!isMatch)
       throw new customError.UnauthorizedError("Invalid credentials!");
 
-    delete business.password;
+    delete user.password;
     const payloadData = {
-      id: business._id,
-      username: business.userName,
-      email: business.email,
-      businessName: business.businessName,
+      id: user._id,
+      username: user.userName,
+      email: user.email,
+      userName: user.userName,
     };
 
     const tokens = await tokenService.generateAuthToken(payloadData);
     if (!tokens) throw new Error("Token was not generated..");
 
-    res.status(200).json({ success: true, result: business, tokens: tokens });
+    res.status(200).json({ success: true, result: user, tokens: tokens });
   } catch (err) {
     next(err);
   }
 };
 
 // =================================================
-// ************ Update Buseinsss  ******************
+// ************ Update User  ******************
 // =================================================
-exports.updateBusiness = async (req, res, next) => {
+exports.updateUser = async (req, res, next) => {
   try {
     let _id = req.params.id;
     let payload = req.body;
 
-    const business = await BusinessModel.findOne({
+    const user = await UserModel.findOne({
       _id: _id,
       email: payload.email,
       isDeleted: false,
     });
-    if (!business)
-      throw new customError.NotFoundError("Buseiness does not exsist!");
+    if (!user)
+      throw new customError.NotFoundError("User does not exsist!");
 
     payload.updatedAt = new Date();
-    const addBusiness = await crudService.updateById(
-      BusinessModel,
+    const adduser = await crudService.updateById(
+      UserModel,
       _id,
       payload
     );
-    if (!addBusiness)
-      throw new customError.NotFoundError("Business updation fail!");
+    if (!adduser)
+      throw new customError.NotFoundError("User updation fail!");
 
     res.status(200).json({
       success: true,
       result: {
-        businessName: addBusiness.businessName,
-        userName: addBusiness.userName,
-        email: addBusiness.email,
+        userName: adduser.userName,
+        email: adduser.email,
       },
     });
   } catch (err) {

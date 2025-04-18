@@ -5,23 +5,7 @@ const phoneNumberRegex = /^\+?[1-9]\d{1,14}$/;
 const Schema = mongoose.Schema;
 
 
-const businessSchema = new Schema({
-    businessName: {
-        type: String,
-        required: true,
-    },
-    businessCity: {
-        type: String,
-        required: true,
-    },
-    businessLocation: {
-        type: String,
-        required: true,
-    },
-    cnic: {
-        type: String,
-        required: true,
-    },
+const userSchema = new Schema({
     userName: {
         type: String,
         required: true,
@@ -33,6 +17,10 @@ const businessSchema = new Schema({
     lastName: {
         type: String,
         required: false,
+    },
+    cnic: {
+        type: String,
+        required: true,
     },
     phoneNumber: {
         type: String,
@@ -84,4 +72,4 @@ const businessSchema = new Schema({
     },
 }, { timestamps: true })
 
-module.exports = mongoose.model('Businessstore', businessSchema)
+module.exports = mongoose.model('Users', userSchema)
