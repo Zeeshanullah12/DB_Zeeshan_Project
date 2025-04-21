@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const dotenv = require("dotenv");
 const connectDb = require("./src/config/db");
-const mandiRouter = require("./src/routes/routes");
+const mainRoutes = require("./src/routes/routes");
 const errorHandler = require("./src/middlewares/errorHandler.middleware");
 const imageUpload = require("./src/utils/imageUploadHelper");
 
@@ -23,7 +23,7 @@ app.use(express.json());  // Use express.json() instead of bodyParser.json()
 app.use("/assets/images", express.static(imageUpload.serveImages));
 
 // ** Call Main Router **
-app.use("/api", mandiRouter);
+app.use("/api", mainRoutes);
 
 
 // *** Use the error-handling middleware ***
